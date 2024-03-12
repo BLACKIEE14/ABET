@@ -72,6 +72,13 @@ class API {
     return jsonData['data'];
   }
 
+  static Future<List> getPaymentMethod() async {
+    var response = await http.get(Uri.parse('$baseURL/api/payment-method'),
+        headers: {"Authorization": "Bearer ${Hive.box('Login').get('token')}"});
+    Map jsonData = jsonDecode(response.body);
+    return jsonData['data'];
+  }
+
   static Future<Map> postUserDetails(name, {File? image}) async {
     var request = new http.MultipartRequest(
       "POST",
@@ -102,6 +109,16 @@ class API {
 
   static Future<Map> getUserTransction() async {
     var response = await http.get(Uri.parse('$baseURL/api/transaction'),
+        headers: {"Authorization": "Bearer ${Hive.box('Login').get('token')}"});
+    print(response.body);
+
+    Map jsonData = jsonDecode(response.body);
+
+    return jsonData['data'];
+  }
+
+  static Future<Map> getUserTransctiondetails(String id) async {
+    var response = await http.get(Uri.parse('$baseURL/api/transaction/' + id),
         headers: {"Authorization": "Bearer ${Hive.box('Login').get('token')}"});
     print(response.body);
 

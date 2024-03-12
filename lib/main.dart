@@ -6,6 +6,7 @@ import 'package:abet/Pages/CreateAccount.dart';
 
 import 'package:abet/Pages/Depohistory.dart';
 import 'package:abet/Pages/Depositdetails.dart';
+import 'package:abet/Pages/Depositdetails2.dart';
 import 'package:abet/Pages/Help.dart';
 import 'package:abet/Pages/Home.dart';
 import 'package:abet/Pages/Keyboard.dart';
@@ -54,12 +55,13 @@ class MyApp extends StatelessWidget {
         "/profile": (context) => const Profile(),
         "/noti": (context) => const Notifi(),
         "/depohistory": (context) => const DepoHistory(),
-        "/trans": (context) => const transdetials(),
-        "/withdraww": (context) => const Withdraww(),
+        "/trans": (context) => const transdetials(id: ""),
+        "/withdraww": (context) => const Withdraww(id: ""),
         "/htwaknum": (context) => const htwaknum(),
         "/createaccount": (context) => const CreateAccount(),
         "/profileupdate": (context) => const ProfileUpdate(),
         "/depodetails": (context) => const Depodetails(),
+        "/depodetails2": (context) => const Depositdetails2(),
         "/withdetails": (context) => const Withdrawdetials(),
         "/login": (context) => const Login(),
         "/2Ddetailspage": (context) => const TwoDDetails(),

@@ -18,13 +18,9 @@ class _NotifiState extends State<Notifi> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2)).then((value) {
-      isloading = false;
-      setState(() {});
-    });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       data = await API.getUserNoti();
-
+      isloading = false;
       data.forEach((key, value) {
         print(value);
         ColumnWidg.add(ColWig(data: value, date: key));
@@ -42,7 +38,7 @@ class _NotifiState extends State<Notifi> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Color(0xff002bc3),
+        backgroundColor: Color(0xff002bc3),
         appBar: AppBar(
           backgroundColor: Color(0xff002bc3),
           title: Text(
@@ -53,17 +49,16 @@ class _NotifiState extends State<Notifi> {
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.white),
         ),
-        body: isloading
-            ? Center(child: loading())
-            : Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
-                    color: Colors.white),
-                child: SingleChildScrollView(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              color: Colors.white),
+          child: isloading
+              ? Center(child: loading())
+              : SingleChildScrollView(
                   child: Container(
                     margin: EdgeInsets.all(15),
                     child: Column(
@@ -72,7 +67,7 @@ class _NotifiState extends State<Notifi> {
                     ),
                   ),
                 ),
-              ),
+        ),
       ),
     );
   }

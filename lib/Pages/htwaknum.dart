@@ -13,13 +13,9 @@ class htwaknum extends StatefulWidget {
 
 class _htwaknumState extends State<htwaknum> {
   Map data = {};
-  bool isloading = true;
+
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2)).then((value) {
-      isloading = false;
-      setState(() {});
-    });
     super.initState();
   }
 
@@ -29,7 +25,7 @@ class _htwaknumState extends State<htwaknum> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      // backgroundColor: Color(0xff002bc3),
+      backgroundColor: Color(0xff002bc3),
       appBar: AppBar(
         backgroundColor: Color(0xff002bc3),
         title: Text(
@@ -40,98 +36,93 @@ class _htwaknumState extends State<htwaknum> {
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: isloading
-          ? Center(child: loading())
-          : Container(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                  color: Colors.white),
-              child: SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.all(15),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (currentindex == 1) {
-                                  setState(() {
-                                    currentindex = 0;
-                                    currentPage = TwoD();
-                                  });
-                                }
-                              },
-                              child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: currentindex == 0
-                                          ? Color(0xff002bc3)
-                                          : Colors.white,
-                                      border:
-                                          Border.all(color: Color(0xff002bc3))),
-                                  child: Center(
-                                    child: Text(
-                                      '2D',
-                                      style: TextStyle(
-                                          color: currentindex == 0
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  )),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (currentindex == 0) {
-                                  setState(() {
-                                    currentindex = 1;
-                                    currentPage = ThreeD();
-                                  });
-                                }
-                              },
-                              child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: currentindex == 1
-                                          ? Color(0xff002bc3)
-                                          : Colors.white,
-                                      border:
-                                          Border.all(color: Color(0xff002bc3))),
-                                  child: Center(
-                                    child: Text(
-                                      '3D',
-                                      style: TextStyle(
-                                          color: currentindex == 1
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  )),
-                            ),
-                          ),
-                        ],
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            color: Colors.white),
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(15),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          if (currentindex == 1) {
+                            setState(() {
+                              currentindex = 0;
+                              currentPage = TwoD();
+                            });
+                          }
+                        },
+                        child: Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: currentindex == 0
+                                    ? Color(0xff002bc3)
+                                    : Colors.white,
+                                border: Border.all(color: Color(0xff002bc3))),
+                            child: Center(
+                              child: Text(
+                                '2D',
+                                style: TextStyle(
+                                    color: currentindex == 0
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            )),
                       ),
-                      currentPage,
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          if (currentindex == 0) {
+                            setState(() {
+                              currentindex = 1;
+                              currentPage = ThreeD();
+                            });
+                          }
+                        },
+                        child: Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: currentindex == 1
+                                    ? Color(0xff002bc3)
+                                    : Colors.white,
+                                border: Border.all(color: Color(0xff002bc3))),
+                            child: Center(
+                              child: Text(
+                                '3D',
+                                style: TextStyle(
+                                    color: currentindex == 1
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            )),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+                currentPage,
+              ],
             ),
+          ),
+        ),
+      ),
     ));
   }
 }
@@ -150,10 +141,12 @@ Map data = {};
 List<Widget> TwoDD = [];
 
 class _TwoDState extends State<TwoD> {
+  bool isloading = true;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       data = await API.getHtwakNumb2d();
+      isloading = false;
       TwoDD.clear();
       data.forEach((key, value) {
         print("aggagga  $value");
@@ -172,12 +165,16 @@ class _TwoDState extends State<TwoD> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: TwoDD,
-          )),
+      child: isloading
+          ? Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: Center(child: loading()))
+          : Container(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: TwoDD,
+              )),
     );
   }
 }
@@ -194,11 +191,12 @@ class ThreeD extends StatefulWidget {
 List data1 = [];
 
 class _ThreeDState extends State<ThreeD> {
+  bool isloading = true;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       data1 = await API.getHtwakNumb3d();
-
+      isloading = false;
       if (mounted) {
         setState(() {});
       }
@@ -210,16 +208,20 @@ class _ThreeDState extends State<ThreeD> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...data1.map((e) => ThreeDCard(
-                    e: e,
-                  ))
-            ],
-          )),
+      child: isloading
+          ? Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: Center(child: loading()))
+          : Container(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...data1.map((e) => ThreeDCard(
+                        e: e,
+                      ))
+                ],
+              )),
     );
   }
 }

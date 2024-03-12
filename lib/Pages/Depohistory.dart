@@ -1,7 +1,11 @@
 import 'package:abet/Component.dart/API.dart';
 import 'package:abet/Component.dart/loading.dart';
+import 'package:abet/Pages/Home.dart';
+import 'package:abet/Pages/transistdetails.dart';
+import 'package:abet/Pages/withdraww.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class DepoHistory extends StatefulWidget {
   const DepoHistory({super.key});
@@ -12,22 +16,16 @@ class DepoHistory extends StatefulWidget {
 
 class _DepoHistoryState extends State<DepoHistory> {
   Map data = {};
-
+  final formatter = NumberFormat.decimalPattern();
   bool isloading = true;
 
   List<Widget> ColumnWidg = [];
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2)).then((value) {
-      isloading = false;
-      if (mounted) {
-        setState(() {});
-      }
-    });
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       data = await API.getUserTransction();
 
+      isloading = false;
       data.forEach((key, value) {
         print(value);
         ColumnWidg.add(Month(data: value, date: key));
@@ -44,7 +42,7 @@ class _DepoHistoryState extends State<DepoHistory> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Color(0xff002bc3),
+        backgroundColor: Color(0xff002bc3),
         appBar: AppBar(
           backgroundColor: Color(0xff002bc3),
           title: Text(
@@ -55,17 +53,16 @@ class _DepoHistoryState extends State<DepoHistory> {
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.white),
         ),
-        body: isloading
-            ? Center(child: loading())
-            : Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
-                    color: Colors.white),
-                child: SingleChildScrollView(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              color: Colors.white),
+          child: isloading
+              ? Center(child: loading())
+              : SingleChildScrollView(
                   child: Container(
                     margin: EdgeInsets.all(15),
                     child: Column(
@@ -73,7 +70,7 @@ class _DepoHistoryState extends State<DepoHistory> {
                     ),
                   ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -135,7 +132,13 @@ class Depo extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pushNamed('/trans');
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return transdetials(
+                      id: data['id'],
+                    );
+                  },
+                ));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,10 +176,12 @@ class Depo extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      data['type'] + data['amount'].toString() + " Ks",
+                      data['type'] + formatter.format(data['amount']) + " Ks",
                       textAlign: TextAlign.right,
                       style: TextStyle(
-                          color: Colors.green,
+                          color: data['status'] == 1
+                              ? Colors.yellow.shade800
+                              : Colors.green,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
@@ -211,7 +216,13 @@ class withdraw extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pushNamed('/withdraww');
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return Withdraww(
+                      id: data['id'],
+                    );
+                  },
+                ));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -249,10 +260,12 @@ class withdraw extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      data['type'] + data['amount'].toString() + " Ks",
+                      data['type'] + formatter.format(data['amount']) + " Ks",
                       textAlign: TextAlign.end,
                       style: TextStyle(
-                          color: Colors.red,
+                          color: data['status'] == 1
+                              ? Colors.yellow.shade800
+                              : Colors.red,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),

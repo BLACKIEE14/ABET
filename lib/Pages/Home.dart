@@ -2,6 +2,7 @@ import 'package:abet/Component.dart/API.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -12,7 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 Map data = {};
-
+final formatter = NumberFormat.decimalPattern();
 List Slide = [];
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -108,8 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text(
                                         Hive.box('Login').get('balance') == null
                                             ? "0" + " Ks"
-                                            : Hive.box('Login')
-                                                    .get('balance')
+                                            : formatter
+                                                    .format(Hive.box('Login')
+                                                        .get('balance'))
                                                     .toString() +
                                                 " Ks",
                                         style: TextStyle(
@@ -631,10 +633,14 @@ class Advertisement extends StatelessWidget {
         width: double.infinity,
         fit: BoxFit.fill,
         errorBuilder: (context, expection, stackTrace) {
-          return Text(
-            'Sorry',
-            style: TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+          return Center(
+            child: Text(
+              'Sorry',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
           );
         },
       ),
