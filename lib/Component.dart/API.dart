@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:abet/Pages/Showtoast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +23,65 @@ class API {
     http.Response response = await http.post(Uri.parse('$baseURL/api/register'),
         body: data, headers: {"Accept": "application/json"});
     print(response.body);
+
     Map jsonData = jsonDecode(response.body);
+    // if (response.statusCode == 200) {
+
+    // }
+    return jsonData;
+  }
+
+  static Future<Map> postPayment(
+    payment_method,
+    transaction_id,
+    amount,
+  ) async {
+    Map<String, dynamic> data = {
+      "payment_method": payment_method.toString(),
+      "transaction_id": transaction_id,
+      "amount": amount.toString().replaceAll(",", ""),
+    };
+    http.Response response = await http
+        .post(Uri.parse('$baseURL/api/deposit/submit'), body: data, headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer ${Hive.box('Login').get('token')}"
+    });
+    print(response.body);
+    Map jsonData = jsonDecode(response.body);
+
+    return jsonData;
+  }
+
+  static Future<Map> postWithdraw(
+    withdraw_payment,
+    withdraw_account_name,
+    withdraw_account_number,
+    withdraw_account_number_confirmation,
+    amount,
+    pin,
+  ) async {
+    Map<String, dynamic> data = {
+      "withdraw_payment": withdraw_payment.toString(),
+      "withdraw_account_name": withdraw_account_name,
+      "withdraw_account_number": withdraw_account_number.toString(),
+      "withdraw_account_number_confirmation":
+          withdraw_account_number_confirmation.toString(),
+      "amount": amount.toString().replaceAll(",", ""),
+      "pin": pin.toString(),
+    };
+    http.Response response = await http
+        .post(Uri.parse('$baseURL/api/withdraw/submit'), body: data, headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer ${Hive.box('Login').get('token')}"
+    });
+    print(data);
+    print(response.body);
+    Map jsonData = jsonDecode(response.body);
+    Map errors = jsonData['errors'] == null ? {} : jsonData['errors'];
+    errors.forEach((key, value) {
+      showToast(value[0]);
+    });
+
     return jsonData;
   }
 
