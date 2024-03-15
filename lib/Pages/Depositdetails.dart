@@ -361,12 +361,10 @@ class _DepodetailsState extends State<Depodetails> {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: selectetpayment == null
-                ? Placeholder(
-                    child: Image.asset(
-                      'lib/Img/placeholderr.jpg',
-                      height: 30,
-                      width: 30,
-                    ),
+                ? Image.asset(
+                    'lib/Img/placeholder.jpg',
+                    height: 30,
+                    width: 30,
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -449,12 +447,10 @@ class _DepodetailsState extends State<Depodetails> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: selectetpaymentmethod == null
-                              ? Placeholder(
-                                  child: Image.asset(
-                                    'lib/Img/placeholderr.jpg',
-                                    height: 30,
-                                    width: 30,
-                                  ),
+                              ? Image.asset(
+                                  'lib/Img/placeholder.jpg',
+                                  height: 30,
+                                  width: 30,
                                 )
                               : Image.network(
                                   selectetpaymentmethod!['image'],
@@ -471,14 +467,18 @@ class _DepodetailsState extends State<Depodetails> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           selectetpaymentmethod == null
-                              ? CircularProgressIndicator()
+                              ? Container(
+                                  color: Colors.grey.shade400,
+                                )
                               : Text(
                                   selectetpaymentmethod!['account_name'],
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 14),
                                 ),
                           selectetpaymentmethod == null
-                              ? CircularProgressIndicator()
+                              ? Container(
+                                  color: Colors.grey.shade400,
+                                )
                               : Text(
                                   selectetpaymentmethod!['account_number'],
                                   style: TextStyle(

@@ -210,6 +210,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                               onTap: () async {
                                 Map response = await API.postUserDetails(
                                   txtconname.text,
+                                  image: image,
                                 );
                                 Map userdetail = await API.getUserDetails();
                                 showToast('Profile Updated Successfully');
