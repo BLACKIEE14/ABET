@@ -1,4 +1,5 @@
 import 'package:abet/Component.dart/API.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
@@ -273,21 +274,32 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding:
                             const EdgeInsets.only(left: 10, right: 10, top: 10),
                         child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          width: double.infinity,
-                          height: 200,
-                          child: PageView(
-                            controller: controller,
-                            children: [
-                              ...Slide.map((e) => Advertisement(
-                                    e: e,
-                                  ))
-                            ],
-                          ),
-                        ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey.shade100,
+                            ),
+                            width: double.infinity,
+                            height: 200,
+                            child: CarouselSlider(
+                                items: [
+                                  ...Slide.map((e) => Advertisement(
+                                        e: e,
+                                      ))
+                                ],
+                                options: CarouselOptions(
+                                  height: 200,
+                                  viewportFraction: 1,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: true,
+                                  enlargeCenterPage: false,
+                                  reverse: false,
+                                  autoPlay: true,
+                                  autoPlayInterval: Duration(seconds: 5),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 800),
+                                  onPageChanged: (index, reason) {},
+                                  scrollDirection: Axis.horizontal,
+                                ))),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -630,10 +642,14 @@ class Advertisement extends StatelessWidget {
           topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       child: Image.network(
         e['image'],
-        width: double.infinity,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
         errorBuilder: (context, expection, stackTrace) {
-          return Center(child: Image.asset('lib/Img/placeholder.png'));
+          return Center(
+              child: Image.asset(
+            'lib/Img/placeholderr.jpeg',
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ));
         },
       ),
     );
