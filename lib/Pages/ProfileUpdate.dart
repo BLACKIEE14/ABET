@@ -208,12 +208,17 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                           child: Center(
                             child: GestureDetector(
                               onTap: () async {
-                                Map response = await API.postUserDetails(
+                                isloading = true;
+                                setState(() {});
+                                await API.postUserDetails(
                                   txtconname.text,
                                   image: image,
                                 );
+
                                 Map userdetail = await API.getUserDetails();
-                                showToast('Profile Updated Successfully');
+                                isloading = false;
+                                setState(() {});
+
                                 Navigator.of(context).pop();
                               },
                               child: Container(

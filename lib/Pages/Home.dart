@@ -633,15 +633,7 @@ class Advertisement extends StatelessWidget {
         width: double.infinity,
         fit: BoxFit.fill,
         errorBuilder: (context, expection, stackTrace) {
-          return Center(
-            child: Text(
-              'Sorry',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-          );
+          return Center(child: Image.asset('lib/Img/placeholder.png'));
         },
       ),
     );

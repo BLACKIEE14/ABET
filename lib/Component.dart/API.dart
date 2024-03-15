@@ -138,7 +138,7 @@ class API {
     return jsonData['data'];
   }
 
-  static Future<Map> postUserDetails(name, {File? image}) async {
+  static Future<void> postUserDetails(name, {File? image}) async {
     var request = new http.MultipartRequest(
       "POST",
       Uri.parse('$baseURL/api/profile/update'),
@@ -163,7 +163,12 @@ class API {
     // tempBox.put("photo", jsonDecode(response.body)['user']['photo']);
     print(response.body);
     Map jsonData = jsonDecode(response.body);
-    return jsonData;
+    if (response.statusCode == 200) {
+      showToast('Profile Updated Successfully');
+    } else {
+      showToast('Profile Update Not Successful');
+    }
+    // return jsonData;
   }
 
   static Future<Map> getUserTransction() async {
