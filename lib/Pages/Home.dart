@@ -1,6 +1,7 @@
 import 'package:abet/Component.dart/API.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ class MyHomePage extends StatefulWidget {
 Map data = {};
 final formatter = NumberFormat.decimalPattern();
 List Slide = [];
+bool isloading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
@@ -124,19 +126,39 @@ class _MyHomePageState extends State<MyHomePage> {
                                   )
                                 ],
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: Color(0xff002bc3)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Icon(
-                                    Icons.refresh,
-                                    size: 18,
-                                    color: Colors.white,
+                              GestureDetector(
+                                onTap: () async {
+                                  isloading = true;
+                                  setState(() {});
+                                  Map User = await API.getUserDetails();
+
+                                  Slide = await API.getSlide();
+                                  isloading = false;
+                                  if (mounted) {
+                                    setState(() {});
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Color(0xff002bc3)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: isloading == true
+                                        ? SizedBox(
+                                            height: 18,
+                                            width: 18,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                            ))
+                                        : Icon(
+                                            Icons.refresh,
+                                            size: 18,
+                                            color: Colors.white,
+                                          ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -322,6 +344,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ),
+
                       // Container(
                       //   height: 300,
                       //   child: Image.network(
