@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:abet/Pages/Showtoast.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
@@ -92,7 +93,61 @@ class API {
     });
     print(response.body);
     Map jsonData = jsonDecode(response.body);
-    return jsonData["data"];
+    if (response.statusCode == 200) {
+      showToast('လောဂ့်အင်ဝင်ရောက်ခြင်းအောင်မြင်ပါသည်။');
+    } else {
+      showToast(jsonData['message']);
+    }
+    return jsonData["data"] == null ? {} : jsonData['data'];
+  }
+
+  static Future<Map> posttwod_evening(List numbers, id) async {
+    var response = await http.post(
+        Uri.parse('$baseURL/api/twod_section/$id/bet'),
+        headers: {"Authorization": "Bearer ${Hive.box('Login').get('token')}"},
+        body: json.encode({
+          "bet_data": [
+            ...numbers.map((e) => {"number": e[0], "amount": e[1]})
+          ]
+        }));
+    print(response.body);
+    Map jsonData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      showToast(jsonData['message']);
+    } else {
+      showToast(jsonData['message']);
+    }
+    return jsonData;
+  }
+
+  static Future<Map> posttwod_morning(List numbers, id) async {
+    var response = await http.post(
+        Uri.parse('$baseURL/api/twod_section/$id/bet'),
+        headers: {"Authorization": "Bearer ${Hive.box('Login').get('token')}"},
+        body: json.encode({
+          "bet_data": [
+            ...numbers.map((e) => {"number": e[0], "amount": e[1]})
+          ]
+        }));
+    print(response.body);
+    Map jsonData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      showToast(jsonData['message']);
+    } else {
+      showToast(jsonData['message']);
+    }
+    return jsonData;
+  }
+
+  static Future<List> gettwod_section() async {
+    var response = await http.get(Uri.parse('$baseURL/api/twod_section'),
+        headers: {"Authorization": "Bearer ${Hive.box('Login').get('token')}"});
+
+    print(response.body);
+
+    Map jsonData = jsonDecode(response.body);
+
+    return jsonData['data']['MM 2D'];
   }
 
   static Future<Map> getUserDetails() async {

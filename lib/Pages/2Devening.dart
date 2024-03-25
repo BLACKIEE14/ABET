@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:abet/Component.dart/API.dart';
 import 'package:abet/Component.dart/colors.dart';
+import 'package:abet/Component.dart/utils.dart';
+import 'package:abet/Pages/Depositdetails.dart';
+import 'package:abet/Pages/Showtoast.dart';
 import 'package:flutter/material.dart';
 
 class TwoDevening extends StatefulWidget {
-  const TwoDevening({super.key});
+  final int id;
+  const TwoDevening({super.key, required this.id});
 
   @override
   State<TwoDevening> createState() => _TwoDeveningState();
@@ -166,8 +171,20 @@ class _TwoDeveningState extends State<TwoDevening> {
                               ),
                               SizedBox(width: 5),
                               GestureDetector(
-                                onTap: () {
-                                  print('gwenchana');
+                                onTap: () async {
+                                  List nextline =
+                                      txtcontroller.text.split('\n');
+                                  if (nextline.last == '') {
+                                    nextline.removeLast();
+                                  }
+                                  List numb = [];
+                                  for (String x in nextline) {
+                                    numb.add(getNumAndPrice(x));
+                                  }
+
+                                  Map response = await API.posttwod_evening(
+                                      numb, widget.id);
+                                  print('gwenchana $response');
                                 },
                                 child: Container(
                                   height: 50,
@@ -192,7 +209,32 @@ class _TwoDeveningState extends State<TwoDevening> {
                           KAMKeyboard(
                             con: txtcontroller,
                             enterAction: () {
-                              txtcontroller.text += "\n";
+                              String val = txtcontroller.text.split('\n').last;
+                              int total;
+                              try {
+                                total = getTotalMoney(val);
+                              } catch (e) {
+                                // Audio.playError();
+                                showToast("မှန်ကန်စွာရိုက်ထည့်ပါ");
+                              }
+
+                              if (val.isEmpty) {
+                                // Audio.playError();
+                                showToast("အကွက်အရင်ထိုးပါ");
+                              } else if (!validateGroup(val)) {
+                                // Audio.playError();
+                                showToast("မှန်ကန်စွာရိုက်ထည့်ပါ");
+                              } else {
+                                final List numsFromGroup = getNumAndPrice(val);
+
+                                total = getTotalMoney(val);
+                                // Provider.of<TempProv>(context, listen: false)
+                                //     .addPair(
+                                //   val,
+                                //   total,
+                                // );
+                                txtcontroller.text += "\n";
+                              }
                             },
                             printAction: () {},
                             // willInkwell: true,
@@ -877,58 +919,58 @@ class _TwoDeveningState extends State<TwoDevening> {
   }
 }
 
-class Voc2 extends StatelessWidget {
-  const Voc2({
-    super.key,
-  });
+// class Voc2 extends StatelessWidget {
+//   const Voc2({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 10,
-        right: 10,
-      ),
-      child: Column(
-        children: [
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '78 500',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '500',
-                      style: TextStyle(
-                          color: Colors.lightBlue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Divider(),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(
+//         left: 10,
+//         right: 10,
+//       ),
+//       child: Column(
+//         children: [
+//           Container(
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   '78 500',
+//                   style: TextStyle(
+//                       color: Colors.black,
+//                       fontWeight: FontWeight.bold,
+//                       fontSize: 16),
+//                 ),
+//                 Row(
+//                   children: [
+//                     Text(
+//                       '500',
+//                       style: TextStyle(
+//                           color: Colors.lightBlue,
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 16),
+//                     ),
+//                     SizedBox(
+//                       width: 10,
+//                     ),
+//                     Icon(
+//                       Icons.delete,
+//                       color: Colors.red,
+//                     )
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Divider(),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class Headline extends StatelessWidget {
   const Headline({

@@ -193,49 +193,7 @@ class _LoginState extends State<Login> {
                           Map response = await API.postUserLogin(
                               txtconphone.text, txtconpassword.text);
                           print(response);
-                          if (response["token"] == null) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                Future.delayed(Duration(seconds: 2)).then(
-                                    (value) => Navigator.of(context).pop());
-                                return Dialog(
-                                  child: Container(
-                                    height: 150,
-                                    padding: EdgeInsets.all(20),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Color(0xff002bc3)),
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.error_outline,
-                                            color: Colors.white,
-                                            size: 50,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 15),
-                                            child: Text(
-                                              'အမည်နှင့်စကားဝှက်မှားယွင်းနေပါသည်။',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          } else {
-                            showToast("လောဂ့်အင်ဝင်ရောက်ခြင်းအောင်မြင်ပါသည်။");
+                          if (response["token"] != null) {
                             Box tempBox = Hive.box("Login");
                             tempBox.put("token", response["token"]);
                             tempBox.put("name", response["name"]);

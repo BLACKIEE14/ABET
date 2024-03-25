@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:abet/Component.dart/API.dart';
 import 'package:abet/Component.dart/Audio.dart';
 import 'package:abet/Component.dart/colors.dart';
+import 'package:abet/Component.dart/utils.dart';
+import 'package:abet/Pages/Showtoast.dart';
 import 'package:flutter/material.dart';
 
 class TwoDDetails extends StatefulWidget {
-  const TwoDDetails({super.key});
+  final int id;
+  const TwoDDetails({super.key, required this.id});
 
   @override
   State<TwoDDetails> createState() => _TwoDDetailsState();
@@ -117,10 +121,6 @@ class _TwoDDetailsState extends State<TwoDDetails> {
                             Voucher(),
                             Voucher(),
                             Voucher(),
-                            // Voc2(),
-                            // Voc2(),
-                            // Voc2(),
-                            // Voc2(),
                           ],
                         ),
                       ),
@@ -167,8 +167,20 @@ class _TwoDDetailsState extends State<TwoDDetails> {
                               ),
                               SizedBox(width: 5),
                               GestureDetector(
-                                onTap: () {
-                                  print('gwenchana');
+                                onTap: () async {
+                                  List nextline =
+                                      txtcontroller.text.split('\n');
+                                  if (nextline.last == '') {
+                                    nextline.removeLast();
+                                  }
+                                  List numb = [];
+                                  for (String x in nextline) {
+                                    numb.add(getNumAndPrice(x));
+                                  }
+
+                                  Map response = await API.posttwod_morning(
+                                      numb, widget.id);
+                                  print('gwenchana $response');
                                 },
                                 child: Container(
                                   height: 50,
@@ -193,7 +205,32 @@ class _TwoDDetailsState extends State<TwoDDetails> {
                           KAMKeyboard(
                             con: txtcontroller,
                             enterAction: () {
-                              txtcontroller.text += "\n";
+                              String val = txtcontroller.text.split('\n').last;
+                              int total;
+                              try {
+                                total = getTotalMoney(val);
+                              } catch (e) {
+                                // Audio.playError();
+                                showToast("မှန်ကန်စွာရိုက်ထည့်ပါ");
+                              }
+
+                              if (val.isEmpty) {
+                                // Audio.playError();
+                                showToast("အကွက်အရင်ထိုးပါ");
+                              } else if (!validateGroup(val)) {
+                                // Audio.playError();
+                                showToast("မှန်ကန်စွာရိုက်ထည့်ပါ");
+                              } else {
+                                final List numsFromGroup = getNumAndPrice(val);
+
+                                total = getTotalMoney(val);
+                                // Provider.of<TempProv>(context, listen: false)
+                                //     .addPair(
+                                //   val,
+                                //   total,
+                                // );
+                                txtcontroller.text += "\n";
+                              }
                             },
                             printAction: () {},
                             // willInkwell: true,

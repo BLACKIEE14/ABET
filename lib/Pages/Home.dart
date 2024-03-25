@@ -1,4 +1,6 @@
 import 'package:abet/Component.dart/API.dart';
+import 'package:abet/Pages/2Ddetailspage.dart';
+import 'package:abet/Pages/2Devening.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Map User = await API.getUserDetails();
+      List twod_section = await API.gettwod_section();
 
       Slide = await API.getSlide();
 
@@ -148,8 +151,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ? SizedBox(
                                             height: 18,
                                             width: 18,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(3),
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 1,
+                                              ),
                                             ))
                                         : Icon(
                                             Icons.refresh,
@@ -369,7 +376,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  List twod_section =
+                                      await API.gettwod_section();
+                                  int am_id = twod_section[0]['id'];
+                                  int pm_id = twod_section[1]['id'];
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -389,9 +400,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 Expanded(
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          '/2Ddetailspage');
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    TwoDDetails(
+                                                                      id: am_id,
+                                                                    )),
+                                                      );
                                                     },
                                                     child: Container(
                                                       width: double.infinity,
@@ -418,9 +435,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 Expanded(
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          '/2Devening');
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    TwoDevening(
+                                                                      id: pm_id,
+                                                                    )),
+                                                      );
                                                     },
                                                     child: Container(
                                                       width: double.infinity,

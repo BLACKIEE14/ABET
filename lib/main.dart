@@ -1,5 +1,6 @@
 import 'package:abet/Component.dart/Audio.dart';
 import 'package:abet/Component.dart/Empty.dart';
+import 'package:abet/Component.dart/utils.dart';
 import 'package:abet/Pages/2Ddetailspage.dart';
 import 'package:abet/Pages/2Devening.dart';
 import 'package:abet/Pages/CreateAccount.dart';
@@ -28,12 +29,15 @@ void main() async {
   await Hive.openBox('Login');
   await Hive.openBox('Number');
 
+  getNumAndPrice("69R500");
+  print(getNumAndPrice("69R500"));
+
   if (Hive.box("Login").get("remember") == false) {
     Hive.box("Login").clear();
   }
 
   WidgetsFlutterBinding.ensureInitialized();
-  Audio.initAud();
+  // Audio.initAud();
   runApp(const MyApp());
 }
 
@@ -64,9 +68,9 @@ class MyApp extends StatelessWidget {
         "/depodetails2": (context) => const Depositdetails2(),
         "/withdetails": (context) => const Withdrawdetials(),
         "/login": (context) => const Login(),
-        "/2Ddetailspage": (context) => const TwoDDetails(),
+        // "/2Ddetailspage": (context) => const TwoDDetails(),
         "/keyboard": (context) => const keyborad(),
-        "/2Devening": (context) => const TwoDevening(),
+        // "/2Devening": (context) => const TwoDevening(),
       },
     );
   }
