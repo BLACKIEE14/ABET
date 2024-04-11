@@ -232,8 +232,13 @@ class API {
     print(response.body);
 
     Map jsonData = jsonDecode(response.body);
+    var output = jsonData['data'];
 
-    return jsonData['data'];
+    if (output is List) {
+      return {};
+    } else {
+      return jsonData['data'];
+    }
   }
 
   static Future<Map> getUserTransctiondetails(String id) async {
@@ -252,7 +257,12 @@ class API {
     print(response.body);
 
     Map jsonData = jsonDecode(response.body);
+    var output = jsonData['data'];
 
-    return jsonData['data'];
+    if (output is List) {
+      return {};
+    } else {
+      return jsonData['data'];
+    }
   }
 }

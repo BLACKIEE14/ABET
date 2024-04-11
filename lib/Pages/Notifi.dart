@@ -58,15 +58,24 @@ class _NotifiState extends State<Notifi> {
               color: Colors.white),
           child: isloading
               ? Center(child: loading())
-              : SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.all(15),
-                    child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      children: ColumnWidg,
+              : data.isEmpty
+                  ? Center(
+                      child: Text(
+                      'No Notifications',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ))
+                  : SingleChildScrollView(
+                      child: Container(
+                        margin: EdgeInsets.all(15),
+                        child: Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: ColumnWidg,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
         ),
       ),
     );

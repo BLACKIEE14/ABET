@@ -4,7 +4,6 @@ import 'package:abet/Component.dart/utils.dart';
 import 'package:abet/Pages/2Ddetailspage.dart';
 import 'package:abet/Pages/2Devening.dart';
 import 'package:abet/Pages/CreateAccount.dart';
-
 import 'package:abet/Pages/Depohistory.dart';
 import 'package:abet/Pages/Depositdetails.dart';
 import 'package:abet/Pages/Depositdetails2.dart';

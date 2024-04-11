@@ -62,14 +62,23 @@ class _DepoHistoryState extends State<DepoHistory> {
               color: Colors.white),
           child: isloading
               ? Center(child: loading())
-              : SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.all(15),
-                    child: Column(
-                      children: ColumnWidg,
+              : data.isEmpty
+                  ? Center(
+                      child: Text(
+                      'No Transaction History',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ))
+                  : SingleChildScrollView(
+                      child: Container(
+                        margin: EdgeInsets.all(15),
+                        child: Column(
+                          children: ColumnWidg,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
         ),
       ),
     );
